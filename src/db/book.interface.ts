@@ -5,6 +5,7 @@ export interface BookList {
     bookGenre: string;
     bookAuthor: string;
     bookPrice: number;
+    
 }
 
 
