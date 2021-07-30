@@ -66,7 +66,7 @@ class BookRepository {
         return new Promise(async (resolve, reject) => {
             this.bookDb.db
                 .select("id", "bookName", "bookGenre", "bookAuthor")
-                .from("game")
+                .from("book")
                 .then((result) => {
                     resolve(result[0]);
                 })
