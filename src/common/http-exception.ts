@@ -1,9 +1,9 @@
 export class HttpException extends Error {
-    status : number;
-    message : string;
-    status_code : number;
+    status: number;
+    message: string;
+    status_code: number;
 
-    constructor(status : number, message : string, statusCode : number){
+    constructor(status: number, message: string, statusCode: number) {
         super(message);
         this.status = status;
         this.message = message;
@@ -13,19 +13,19 @@ export class HttpException extends Error {
 }
 
 export class DatabaseError extends HttpException {
-    constructor(message ?: string){
+    constructor(message?: string) {
         super(500, message || "Something went wrong", 100);
     }
 }
 
-export class BookNotFound extends HttpException{
-    constructor(message ?: string){
+export class BookNotFound extends HttpException {
+    constructor(message?: string) {
         super(404, message || "Cannot find the book", 101);
     }
 }
 
-export class ValidationError extends HttpException{
-    constructor(message ?: string){
+export class ValidationError extends HttpException {
+    constructor(message?: string) {
         super(500, message || "Validation error", 102);
     }
 }

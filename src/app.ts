@@ -2,26 +2,29 @@ import express from "express";
 import errorHandler from "./middleware/error.middleware";
 import BookController from "./controller/book.controller";
 import cors from "cors";
-import KnexDB from "./db/knex";
 
-class BookApp{
-    app : express.Application;
-    approuter : express.Router;
-    constructor(){
+class BookApp {
+    app: express.Application;
+    approuter: express.Router;
+    constructor() {
         this.app = express();
         this.approuter = express.Router();
+        this.init();
     }
 
-    init(){
+    init() {
         return new Promise((resolve, reject) => {
-            try{
-                this.app.appConfig();
-                this.app.routeConfig();
+            try {
+                this.appConfig();
+                this.routeConfig();
+                resolve(true);
             }
-            catch(error){
+            catch (error) {
                 console.log(error);
+                reject(error);
+                process.exit(1);
             }
-            finally{
+            finally {
                 this.app.use(errorHandler);
             }
         });
@@ -30,12 +33,12 @@ class BookApp{
     private appConfig() {
         this.app.use(cors());
         this.app.use(express.json());
-      }
+    }
 
-      private routeConfig() {
+    private routeConfig() {
         const apiPath: string = "/api"
         this.app.use(apiPath, this.approuter);
-        this.approuter.use("/", BookController);
+        this.approuter.use("/book", BookController);
     }
 
     listen(): Promise<boolean> {

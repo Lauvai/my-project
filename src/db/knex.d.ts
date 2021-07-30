@@ -1,7 +1,7 @@
-import * as Knex from "knex";
+import * as Knex from "knex"
 
-declare module "knex"{
-    interface QueryBuilder{
-        customSelect<TRecord, TResult>(value: number): QueryBuilder<TRecord, TResult>;
+declare module "knex" {
+    interface QueryBuilder {
+        customSelect<TRecord, TResult>(value: number): QueryBuilder<TRecord, TResult>
     }
 }
