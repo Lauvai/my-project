@@ -1,5 +1,8 @@
 import BookRepository from "../repository/book.repository";
 import { AddBook, BookList, UpdateBook } from "../db/book.interface";
+import { Book } from "../db/bookinterface2";
+
+
 
 export class BookService {
 
@@ -61,7 +64,7 @@ export class BookService {
         });
     }
 
-    async getAllBooks(): Promise<BookList> {
+    async getAllBooks(): Promise<Book[]> {
         return new Promise((resolve, reject) => {
             this.bookrepository.getAllBooks()
                 .then((result) => {

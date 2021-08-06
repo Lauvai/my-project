@@ -16,7 +16,7 @@ class BookController extends BaseController {
 
     getBook(req: express.Request, res: express.Response, next: express.NextFunction) {
         const id = req.params.id;
-        validateSchema.validateAsync(id).then((ValidatedBook) => {
+        validateSchema.idValidation.validateAsync(id).then((ValidatedBook) => {
             this.bookService.getBook(ValidatedBook).then((book) => {
                 return res.status(200).send(book);
             })
@@ -31,7 +31,7 @@ class BookController extends BaseController {
 
     addBook(req: express.Request, res: express.Response, next: express.NextFunction) {
         const { body } = req;
-        validateSchema.validateAsync(body).then((ValidatedBook) => {
+        validateSchema.add.validateAsync(body).then((ValidatedBook) => {
             this.bookService.addBook(ValidatedBook).then((book) => {
                 return res.status(200).send(book);
             })
@@ -47,7 +47,7 @@ class BookController extends BaseController {
 
     deleteBook(req: express.Request, res: express.Response, next: express.NextFunction) {
         const id = req.params.id;
-        validateSchema.validateAsync(id).then((ValidatedBook) => {
+        validateSchema.idValidation.validateAsync(id).then((ValidatedBook) => {
             this.bookService.deleteBook(ValidatedBook).then((book) => {
                 return res.status(200).send(book);
             })
@@ -62,7 +62,7 @@ class BookController extends BaseController {
 
     updateBook(req: express.Request, res: express.Response, next: express.NextFunction) {
         const { body } = req;
-        validateSchema.validateAsync(body).then((ValidatedBook) => {
+        validateSchema.update.validateAsync(body).then((ValidatedBook) => {
             this.bookService.updateBook(ValidatedBook).then((book) => {
                 return res.status(200).send(book);
             })
@@ -76,7 +76,13 @@ class BookController extends BaseController {
     }
 
     getAllBooks(req: express.Request, res: express.Response, next: express.NextFunction) {
-        return this.bookService.getAllBooks().then((list) => res.status(200).send(list));
+        this.bookService.getAllBooks().then((list) => {
+            return res.status(200).send(list);
+        })
+            .catch((err) => {
+                next(err);
+            });
+
     }
 
     initializeRoutes() {

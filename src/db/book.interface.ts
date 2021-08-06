@@ -1,9 +1,5 @@
 export interface BookList {
-    id: number | null;
-    bookName: string;
-    bookPage: number;
-    bookGenre: string;
-    bookAuthor: string;
+    Book: [];
 
 }
 

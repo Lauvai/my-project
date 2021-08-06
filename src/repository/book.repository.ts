@@ -1,4 +1,5 @@
 import { BookList, AddBook, UpdateBook } from "../db/book.interface";
+import { Book } from "../db/bookinterface2";
 import KnexDB from "../db/knex";
 import { DatabaseError, BookNotFound } from "../common/http-exception";
 
@@ -12,7 +13,7 @@ class BookRepository {
 
     async addBook(book: AddBook): Promise<AddBook> {
         return new Promise(async (resolve, reject) => {
-            this.bookDb.db("book").insert({ name: book.name, page: book.page, genre: book.genre, author: book.author, })
+            this.bookDb.db("book").insert(book)
                 .returning("*").then((result) => {
                     resolve(result[0]);
                 })
@@ -25,9 +26,9 @@ class BookRepository {
     async getBook(): Promise<BookList> {
         return new Promise(async (resolve, reject) => {
             this.bookDb.db.select("id", "bookName", "bookPage", "bookGenre", "bookAuthor",)
-                .from("book")
+                .from("book").where("id", 1)
                 .then((result) => {
-                    resolve(result[1]);
+                    resolve(result[0]);
                 })
                 .catch((error) => {
                     reject(new BookNotFound(error));
@@ -37,10 +38,9 @@ class BookRepository {
 
     async updateBook(book: UpdateBook): Promise<BookList> {
         return new Promise(async (resolve, reject) => {
-            const bookupdating = book;
             this.bookDb.db("book")
                 .where("book.bookid", book.bookId)
-                .update(bookupdating, ["bookid", "bookname", "bookpage", "bookgenre", "bookauthor"])
+                .update(book, ["bookid", "bookname", "bookpage", "bookgenre", "bookauthor"])
                 .then((result) => {
                     resolve(result[0]);
                 })
@@ -62,13 +62,13 @@ class BookRepository {
         })
     }
 
-    async getAllBooks(): Promise<BookList> {
+    async getAllBooks(): Promise<Book[]> {
         return new Promise(async (resolve, reject) => {
             this.bookDb.db
-                .select("id", "bookName", "bookGenre", "bookAuthor")
-                .from("book")
+                .select("id", "bookName", "bookGenre", "bookAuthor", "bookPage")
+                .from("book").groupBy("id")
                 .then((result) => {
-                    resolve(result[0]);
+                    resolve(result);
                 })
                 .catch((error) => {
                     reject(new DatabaseError(error));
