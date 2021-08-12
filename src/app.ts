@@ -38,12 +38,12 @@ class BookApp {
     private routeConfig() {
         const apiPath: string = "/api"
         this.app.use(apiPath, this.approuter);
-        this.approuter.use("/book", BookController);
+        this.approuter.use("/books", BookController);
     }
 
     listen(): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            const port = Number(process.env.APP_PORT || 3000);
+            const port = Number(process.env.APP_PORT || 3300);
             this.app.listen(port, () => {
                 console.log("Express server started on port: " + port);
                 resolve(true);

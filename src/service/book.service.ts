@@ -12,7 +12,7 @@ export class BookService {
         this.bookrepository = new BookRepository();
     }
 
-    async getBook(id: number): Promise<BookList> {
+    async getBook(id: number): Promise<Book> {
         return new Promise((resolve, reject) => {
             this.bookrepository
                 .getBook()
@@ -51,7 +51,7 @@ export class BookService {
         });
     }
 
-    async updateBook(book: UpdateBook): Promise<BookList> {
+    async updateBook(book: UpdateBook): Promise<UpdateBook> {
         return new Promise((resolve, reject) => {
             this.bookrepository
                 .updateBook(book)

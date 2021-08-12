@@ -23,7 +23,7 @@ class BookRepository {
         });
     }
 
-    async getBook(): Promise<BookList> {
+    async getBook(): Promise<Book> {
         return new Promise(async (resolve, reject) => {
             this.bookDb.db.select("id", "bookName", "bookPage", "bookGenre", "bookAuthor",)
                 .from("book").where("id", 1)
@@ -36,7 +36,7 @@ class BookRepository {
         })
     }
 
-    async updateBook(book: UpdateBook): Promise<BookList> {
+    async updateBook(book: UpdateBook): Promise<UpdateBook> {
         return new Promise(async (resolve, reject) => {
             this.bookDb.db("book")
                 .where("book.bookid", book.bookId)
