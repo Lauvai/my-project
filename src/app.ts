@@ -2,6 +2,7 @@ import express from "express";
 import errorHandler from "./middleware/error.middleware";
 import BookController from "./controller/book.controller";
 import cors from "cors";
+import { KnexDB } from "./db/knex";
 
 class BookApp {
     app: express.Application;

@@ -1,54 +1,30 @@
-import Knex from "knex";
+import { knex, Knex } from "knex";
 import config from "../config";
 
-class KnexDB {
-  db!: Knex;
-  private initialized: boolean;
-  private knexConfig: Knex.Config;
+export class KnexDB {
+    config: Knex.Config = {
+        client: "pg",
+        connection: config.POSTGRES_URL,
+        pool: {
+            min: 1,
+            max: 5
+        },
 
-  constructor() {
-    this.knexConfig = {};
-    this.initialized = false;
-  }
+    }
+    db = knex(this.config)
+    
+    constructor() {
+        console.log("Knex init started");
+    }
 
-  async init(): Promise<Boolean> {
-    return new Promise((resolve, reject) => {
-      try {
-        console.log("Knex init");
-        if (this.initialized) {
-          resolve(true);
-        }
-        this.knexConfig = {
-          client: "pg",
-          connection: {
-            host: config.HOST,
-            port: config.PORT,
-            database: config.POSTGRES_DB,
-            user: config.USERNAME,
-            password: config.PASSWORD,
-          },
-          pool: {
-            min: 2,
-            max: 10,
-          },
-        };
+    init(): Promise<boolean> {
+        return new Promise(async (resolve, reject) => {
 
-        this.db = Knex(this.knexConfig);
-
-        const resultT = this.db.raw("select 1 = 1")
-          .then((_) => {
-            this.initialized = true;
+            const resultx = this.db.raw("select 1=1");
+            console.log("result: " + resultx);
             resolve(true);
-          }).catch((err) => {
-            return reject(err);
-          });
-
-      } catch (err) {
-        return reject(err);
-      }
-    });
-  }
+        }),
+    }
 }
 
-const db = new KnexDB();
-export default db;
+export default new KnexDB;

@@ -1,4 +1,4 @@
-import { BookList, AddBook, UpdateBook } from "../db/book.interface";
+import { AddBook, UpdateBook } from "../db/book.interface";
 import { Book } from "../db/bookinterface2";
 import KnexDB from "../db/knex";
 import { DatabaseError, BookNotFound } from "../common/http-exception";
@@ -15,7 +15,7 @@ class BookRepository {
         return new Promise(async (resolve, reject) => {
             this.bookDb.db("book").insert(book)
                 .returning("*").then((result) => {
-                    resolve(result[0]);
+                    resolve(result);
                 })
                 .catch((error) => {
                     reject(new DatabaseError(error));
@@ -23,12 +23,12 @@ class BookRepository {
         });
     }
 
-    async getBook(): Promise<Book> {
+    async getBook(): Promise<Book[]> {
         return new Promise(async (resolve, reject) => {
             this.bookDb.db.select("id", "bookName", "bookPage", "bookGenre", "bookAuthor",)
                 .from("book").where("id", 1)
                 .then((result) => {
-                    resolve(result[0]);
+                    resolve(result);
                 })
                 .catch((error) => {
                     reject(new BookNotFound(error));
@@ -42,7 +42,7 @@ class BookRepository {
                 .where("book.bookid", book.bookId)
                 .update(book, ["bookid", "bookname", "bookpage", "bookgenre", "bookauthor"])
                 .then((result) => {
-                    resolve(result[0]);
+                    resolve(result);
                 })
                 .catch((error) => {
                     reject(new DatabaseError())
