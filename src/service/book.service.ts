@@ -12,7 +12,7 @@ export class BookService {
         this.bookrepository = new BookRepository();
     }
 
-    async getBook(id: number): Promise<Book> {
+    async getBook(id: number): Promise<Book[]> {
         return new Promise((resolve, reject) => {
             this.bookrepository
                 .getBook()

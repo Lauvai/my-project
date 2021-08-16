@@ -11,6 +11,7 @@ export class KnexDB {
         },
 
     }
+    
     db = knex(this.config)
     
     constructor() {
