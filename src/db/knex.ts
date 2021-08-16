@@ -24,7 +24,7 @@ export class KnexDB {
             const resultx = this.db.raw("select 1=1");
             console.log("result: " + resultx);
             resolve(true);
-        }),
+        })
     }
 }
 

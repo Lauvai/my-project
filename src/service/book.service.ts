@@ -15,7 +15,7 @@ export class BookService {
     async getBook(id: number): Promise<Book[]> {
         return new Promise((resolve, reject) => {
             this.bookrepository
-                .getBook()
+                .getBook(id)
                 .then((res) => {
                     return resolve(res);
                 })
@@ -71,7 +71,7 @@ export class BookService {
                     return resolve(result);
                 })
                 .catch((error) => {
-                    return reject(error);
+                    reject(error);
                 })
         })
     }

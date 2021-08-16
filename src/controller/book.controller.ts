@@ -16,7 +16,7 @@ class BookController extends BaseController {
 
     getBook(req: express.Request, res: express.Response, next: express.NextFunction) {
         const id = req.params.id;
-        validateSchema.idValidation.validateAsync(id).then((ValidatedBook) => {
+        validateSchema.idValidation.validateAsync({id}).then((ValidatedBook) => {
             this.bookService.getBook(ValidatedBook).then((book) => {
                 return res.status(200).send(book);
             })
@@ -47,7 +47,7 @@ class BookController extends BaseController {
 
     deleteBook(req: express.Request, res: express.Response, next: express.NextFunction) {
         const id = req.params.id;
-        validateSchema.idValidation.validateAsync(id).then((ValidatedBook) => {
+        validateSchema.idValidation.validateAsync({id}).then((ValidatedBook) => {
             this.bookService.deleteBook(ValidatedBook).then((book) => {
                 return res.status(200).send(book);
             })

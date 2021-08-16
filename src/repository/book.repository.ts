@@ -2,6 +2,7 @@ import { AddBook, UpdateBook } from "../db/book.interface";
 import { Book } from "../db/bookinterface2";
 import KnexDB from "../db/knex";
 import { DatabaseError, BookNotFound } from "../common/http-exception";
+import { idText } from "typescript";
 
 class BookRepository {
 
@@ -15,7 +16,7 @@ class BookRepository {
         return new Promise(async (resolve, reject) => {
             this.bookDb.db("book").insert(book)
                 .returning("*").then((result) => {
-                    resolve(result);
+                    resolve(result[0]);
                 })
                 .catch((error) => {
                     reject(new DatabaseError(error));
@@ -23,10 +24,10 @@ class BookRepository {
         });
     }
 
-    async getBook(): Promise<Book[]> {
+    async getBook(id: number): Promise<Book[]> {
         return new Promise(async (resolve, reject) => {
             this.bookDb.db.select("id", "bookName", "bookPage", "bookGenre", "bookAuthor",)
-                .from("book").where("id", 1)
+                .from("book").where("id", id)
                 .then((result) => {
                     resolve(result);
                 })
@@ -40,9 +41,9 @@ class BookRepository {
         return new Promise(async (resolve, reject) => {
             this.bookDb.db("book")
                 .where("book.bookid", book.bookId)
-                .update(book, ["bookid", "bookname", "bookpage", "bookgenre", "bookauthor"])
+                .update(book, ["bookId", "bookName", "bookPage", "bookGenre", "bookAuthor"])
                 .then((result) => {
-                    resolve(result);
+                    resolve(result[0]);
                 })
                 .catch((error) => {
                     reject(new DatabaseError())
